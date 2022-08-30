@@ -1,16 +1,14 @@
 package org.hegemol.loadbalance.service.impl;
 
 import java.security.SecureRandom;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import org.hegemol.loadbalance.model.Model;
-import org.hegemol.loadbalance.model.ModelWeight;
+import org.hegemol.loadbalance.model.Instance;
+import org.hegemol.loadbalance.model.InstanceWeight;
 import org.hegemol.loadbalance.service.AbstractLoadBalance;
 
 /**
- * TODO
+ * 随机权重
  *
  * @author KevinClair
  **/
@@ -19,24 +17,37 @@ public class RandomWeightLoadBalance extends AbstractLoadBalance {
     private static final SecureRandom RANDOM = new SecureRandom();
 
     @Override
-    protected Model doLoad(final List<? extends Model> models) {
+    protected Instance doLoad(final List<? extends Instance> instances) {
+        int length = instances.size();
         // 判断权重是否相同
-
-
-        return null;
-    }
-
-    private Map<String, Object> instanceExplain(List<? extends Model> models){
         boolean sameWeight = true;
-        for (int i = 0; i < models.size(); i++) {
-            ModelWeight modelWeight = (ModelWeight) models.get(i);
-            int weight = modelWeight.getWeight();
-
-            // 如果当前的权重不等于上一个实例的权重，那么认为不是相同的权重
-            if (i > 0 && weight != ((ModelWeight) models.get(i-1)).getWeight()){
+        // 记录所有的权重值
+        int[] weights = new int[length];
+        int firstInstanceWeight = ((InstanceWeight) instances.get(0)).getWeight();
+        // 记录第一个值
+        weights[0] = firstInstanceWeight;
+        // 记录总的权重
+        int totalWeight = firstInstanceWeight;
+        // 计算总权重和是否是相同的权重
+        for (int i = 1; i < length; i++) {
+            int currentInstanceWeight = ((InstanceWeight) instances.get(i)).getWeight();
+            weights[i] = currentInstanceWeight;
+            totalWeight += currentInstanceWeight;
+            if (sameWeight && currentInstanceWeight != firstInstanceWeight) {
                 sameWeight = false;
             }
         }
-        return new HashMap<>();
+
+        // 如果总权重>0且权重值不相同
+        if (totalWeight > 0 && !sameWeight) {
+            int offset = RANDOM.nextInt(totalWeight);
+            for (int i = 0; i < length; i++) {
+                offset -= weights[i];
+                if (offset < 0) {
+                    return instances.get(i);
+                }
+            }
+        }
+        return instances.get(RANDOM.nextInt(instances.size()));
     }
 }
