@@ -5,14 +5,14 @@ package org.hegemol.loadbalance.model;
  *
  * @author KevinClair
  **/
-public class ModelWeight extends Model{
+public class InstanceWeight extends Instance {
 
     private int weight = 0;
 
-    public ModelWeight() {
+    public InstanceWeight() {
     }
 
-    public ModelWeight(final String address, final int weight) {
+    public InstanceWeight(final String address, final int weight) {
         super(address);
         this.weight = weight;
     }
@@ -33,5 +33,12 @@ public class ModelWeight extends Model{
      */
     public void setWeight(final int weight) {
         this.weight = weight;
+    }
+
+    @Override
+    public String toString() {
+        return "InstanceWeight{" +
+            "weight=" + weight +
+            '}';
     }
 }

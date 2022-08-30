@@ -5,14 +5,14 @@ package org.hegemol.loadbalance.model;
  *
  * @author KevinClair
  **/
-public class Model {
+public class Instance {
 
     private String address;
 
-    public Model() {
+    public Instance() {
     }
 
-    public Model(final String address) {
+    public Instance(final String address) {
         this.address = address;
     }
 
@@ -36,7 +36,7 @@ public class Model {
 
     @Override
     public String toString() {
-        return "Model{" +
+        return "Instance{" +
             "address='" + address + '\'' +
             '}';
     }
