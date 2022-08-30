@@ -1,9 +1,8 @@
 package org.hegemol.loadbalance.service;
 
 import java.util.List;
-import java.util.Objects;
 
-import org.hegemol.loadbalance.model.Model;
+import org.hegemol.loadbalance.model.Instance;
 
 /**
  * TODO
@@ -19,5 +18,5 @@ public interface LoadBalance {
      * @param instances 可供选择的列表
      * @return 负载均衡后的实例
      */
-    Model load(List<? extends Model> instances);
+    Instance load(List<? extends Instance> instances);
 }
