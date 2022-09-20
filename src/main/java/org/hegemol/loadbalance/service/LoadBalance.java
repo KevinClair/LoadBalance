@@ -9,7 +9,7 @@ import org.hegemol.loadbalance.model.Instance;
  *
  * @author KevinClair
  **/
-public interface LoadBalance {
+public interface LoadBalance<E extends Instance> {
 
 
     /**
@@ -18,5 +18,5 @@ public interface LoadBalance {
      * @param instances 可供选择的列表
      * @return 负载均衡后的实例
      */
-    Instance load(List<? extends Instance> instances);
+    Instance load(List<E> instances);
 }
