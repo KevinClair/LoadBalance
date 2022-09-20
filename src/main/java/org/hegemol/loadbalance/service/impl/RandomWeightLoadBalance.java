@@ -12,25 +12,25 @@ import org.hegemol.loadbalance.service.AbstractLoadBalance;
  *
  * @author KevinClair
  **/
-public class RandomWeightLoadBalance extends AbstractLoadBalance {
+public class RandomWeightLoadBalance extends AbstractLoadBalance<InstanceWeight> {
 
     private static final SecureRandom RANDOM = new SecureRandom();
 
     @Override
-    protected Instance doLoad(final List<? extends Instance> instances) {
+    protected Instance doLoad(final List<InstanceWeight> instances) {
         int length = instances.size();
         // 判断权重是否相同
         boolean sameWeight = true;
         // 记录所有的权重值
         int[] weights = new int[length];
-        int firstInstanceWeight = ((InstanceWeight) instances.get(0)).getWeight();
+        int firstInstanceWeight = (instances.get(0)).getWeight();
         // 记录第一个值
         weights[0] = firstInstanceWeight;
         // 记录总的权重
         int totalWeight = firstInstanceWeight;
         // 计算总权重和是否是相同的权重
         for (int i = 1; i < length; i++) {
-            int currentInstanceWeight = ((InstanceWeight) instances.get(i)).getWeight();
+            int currentInstanceWeight = (instances.get(i)).getWeight();
             weights[i] = currentInstanceWeight;
             totalWeight += currentInstanceWeight;
             if (sameWeight && currentInstanceWeight != firstInstanceWeight) {

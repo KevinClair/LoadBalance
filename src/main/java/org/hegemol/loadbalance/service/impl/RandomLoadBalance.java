@@ -11,12 +11,12 @@ import org.hegemol.loadbalance.service.AbstractLoadBalance;
  *
  * @author KevinClair
  **/
-public class RandomLoadBalance extends AbstractLoadBalance {
+public class RandomLoadBalance extends AbstractLoadBalance<Instance> {
 
     private static final SecureRandom RANDOM = new SecureRandom();
 
     @Override
-    protected Instance doLoad(final List<? extends Instance> instances) {
+    protected Instance doLoad(final List<Instance> instances) {
         return instances.get(RANDOM.nextInt(instances.size()));
     }
 }
