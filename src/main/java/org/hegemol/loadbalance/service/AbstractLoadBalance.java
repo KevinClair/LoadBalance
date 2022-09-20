@@ -10,7 +10,7 @@ import org.springframework.util.CollectionUtils;
  *
  * @author KevinClair
  **/
-public abstract class AbstractLoadBalance implements LoadBalance{
+public abstract class AbstractLoadBalance<E extends Instance> implements LoadBalance<E> {
 
     /**
      * 抽象方法
@@ -18,10 +18,10 @@ public abstract class AbstractLoadBalance implements LoadBalance{
      * @param instances 实例列表
      * @return
      */
-    protected abstract Instance doLoad(List<? extends Instance> instances);
+    protected abstract Instance doLoad(List<E> instances);
 
     @Override
-    public Instance load(final List<? extends Instance> instances) {
+    public Instance load(final List<E> instances) {
         if (CollectionUtils.isEmpty(instances)) {
             return null;
         }
