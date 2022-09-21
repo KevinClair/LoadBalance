@@ -16,7 +16,7 @@ public class RandomLoadBalance extends AbstractLoadBalance<Instance> {
     private static final SecureRandom RANDOM = new SecureRandom();
 
     @Override
-    protected Instance doLoad(final List<Instance> instances) {
+    protected Instance doLoad(final List<Instance> instances, final String ip) {
         return instances.get(RANDOM.nextInt(instances.size()));
     }
 }

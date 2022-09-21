@@ -17,7 +17,7 @@ public class RandomWeightLoadBalance extends AbstractLoadBalance<InstanceWeight>
     private static final SecureRandom RANDOM = new SecureRandom();
 
     @Override
-    protected Instance doLoad(final List<InstanceWeight> instances) {
+    protected Instance doLoad(final List<InstanceWeight> instances, final String ip) {
         int length = instances.size();
         // 判断权重是否相同
         boolean sameWeight = true;

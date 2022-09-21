@@ -19,7 +19,7 @@ public class RandomWarmUpWeightLoadBalance extends AbstractLoadBalance<InstanceW
     private static final SecureRandom RANDOM = new SecureRandom();
 
     @Override
-    protected Instance doLoad(final List<InstanceWarmUpWeight> instances) {
+    protected Instance doLoad(final List<InstanceWarmUpWeight> instances, final String ip) {
         int length = instances.size();
         // 判断权重是否相同
         boolean sameWeight = true;

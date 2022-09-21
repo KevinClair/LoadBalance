@@ -23,7 +23,7 @@ class LoadBalanceApplicationTests {
         instances.add(new Instance("127.0.0.3"));
         LoadBalance loadBalance = new RandomLoadBalance();
         for (int i = 0; i < 100; i++) {
-            System.out.println(loadBalance.load(instances));
+            System.out.println(loadBalance.load(instances, ""));
         }
     }
 
@@ -35,7 +35,7 @@ class LoadBalanceApplicationTests {
         instances.add(new InstanceWeight("127.0.0.3", 30));
         LoadBalance loadBalance = new RandomWeightLoadBalance();
         for (int i = 0; i < 300; i++) {
-            System.out.println(loadBalance.load(instances));
+            System.out.println(loadBalance.load(instances, ""));
         }
     }
 
@@ -49,7 +49,7 @@ class LoadBalanceApplicationTests {
         LoadBalance loadBalance = new RandomWarmUpWeightLoadBalance();
         for (int i = 0; i < 1000; i++) {
             Thread.sleep(10);
-            System.out.println(loadBalance.load(instances));
+            System.out.println(loadBalance.load(instances, ""));
         }
     }
 
