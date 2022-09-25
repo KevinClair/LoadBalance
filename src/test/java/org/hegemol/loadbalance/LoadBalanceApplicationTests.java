@@ -1,16 +1,15 @@
 package org.hegemol.loadbalance;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.hegemol.loadbalance.model.ConsistentHashInstance;
 import org.hegemol.loadbalance.model.Instance;
 import org.hegemol.loadbalance.model.InstanceWarmUpWeight;
 import org.hegemol.loadbalance.model.InstanceWeight;
 import org.hegemol.loadbalance.service.LoadBalance;
-import org.hegemol.loadbalance.service.impl.RandomLoadBalance;
-import org.hegemol.loadbalance.service.impl.RandomWarmUpWeightLoadBalance;
-import org.hegemol.loadbalance.service.impl.RandomWeightLoadBalance;
+import org.hegemol.loadbalance.service.impl.*;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 class LoadBalanceApplicationTests {
 
@@ -50,6 +49,30 @@ class LoadBalanceApplicationTests {
         for (int i = 0; i < 1000; i++) {
             Thread.sleep(10);
             System.out.println(loadBalance.load(instances, ""));
+        }
+    }
+
+    @Test
+    public void hash() {
+        List<Instance> instances = new ArrayList<>();
+        instances.add(new Instance("127.0.0.1"));
+        instances.add(new Instance("127.0.0.2"));
+        instances.add(new Instance("127.0.0.3"));
+        LoadBalance loadBalance = new HashLoadBalance();
+        for (int i = 0; i < 1000; i++) {
+            System.out.println(loadBalance.load(instances, "127."+i+".0."+i));
+        }
+    }
+
+    @Test
+    public void consistentHash() {
+        List<ConsistentHashInstance> instances = new ArrayList<>();
+        instances.add(new ConsistentHashInstance("127.0.0.1", 13));
+        instances.add(new ConsistentHashInstance("127.0.0.2", 12));
+        instances.add(new ConsistentHashInstance("127.0.0.3", 10));
+        LoadBalance loadBalance = new ConsistentHashLoadBalance();
+        for (int i = 0; i < 1000; i++) {
+            System.out.println(loadBalance.load(instances, "127."+i+".0."+i));
         }
     }
 
