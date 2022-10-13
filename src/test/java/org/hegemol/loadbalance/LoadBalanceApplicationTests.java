@@ -88,4 +88,18 @@ class LoadBalanceApplicationTests {
         }
     }
 
+    @Test
+    public void roundRobinWeight() throws InterruptedException {
+        List<InstanceWarmUpWeight> instances = new ArrayList<>();
+        long currentTimeMillis = System.currentTimeMillis();
+        instances.add(new InstanceWarmUpWeight("127.0.0.1", 10, currentTimeMillis - 2000, 10000));
+        instances.add(new InstanceWarmUpWeight("127.0.0.2", 10, currentTimeMillis - 3000, 10000));
+        instances.add(new InstanceWarmUpWeight("127.0.0.3", 10, currentTimeMillis - 5000, 10000));
+        LoadBalance loadBalance = new RoundRobinWeightLoadBalance();
+        for (int i = 0; i < 1000; i++) {
+            Thread.sleep(100);
+            System.out.println(loadBalance.load(instances, ""));
+        }
+    }
+
 }
