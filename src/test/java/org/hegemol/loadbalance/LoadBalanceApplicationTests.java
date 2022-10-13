@@ -76,4 +76,16 @@ class LoadBalanceApplicationTests {
         }
     }
 
+    @Test
+    public void roundRobin() {
+        List<Instance> instances = new ArrayList<>();
+        instances.add(new Instance("127.0.0.1"));
+        instances.add(new Instance("127.0.0.2"));
+        instances.add(new Instance("127.0.0.3"));
+        LoadBalance loadBalance = new RoundRobinLoadBalance();
+        for (int i = 0; i < 1000; i++) {
+            System.out.println(loadBalance.load(instances, ""));
+        }
+    }
+
 }
