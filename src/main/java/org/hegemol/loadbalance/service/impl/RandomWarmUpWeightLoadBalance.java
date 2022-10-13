@@ -1,13 +1,12 @@
 package org.hegemol.loadbalance.service.impl;
 
-import java.security.SecureRandom;
-import java.util.List;
-
+import com.alibaba.fastjson.JSON;
 import org.hegemol.loadbalance.model.Instance;
 import org.hegemol.loadbalance.model.InstanceWarmUpWeight;
 import org.hegemol.loadbalance.service.AbstractLoadBalance;
 
-import com.alibaba.fastjson.JSON;
+import java.security.SecureRandom;
+import java.util.List;
 
 /**
  * 随机权重算法，预热加载
@@ -52,22 +51,5 @@ public class RandomWarmUpWeightLoadBalance extends AbstractLoadBalance<InstanceW
             }
         }
         return instances.get(RANDOM.nextInt(instances.size()));
-    }
-
-    /**
-     * 通过计算预热时间，动态计算权重值
-     *
-     * @param instance 当前实例
-     * @return
-     */
-    private int getWeight(InstanceWarmUpWeight instance) {
-        if (instance.getWeight() > 0 && instance.getStartUpTime() > 0) {
-            int betweenTime = (int) (System.currentTimeMillis() - instance.getStartUpTime());
-            if (betweenTime > 0 && betweenTime < instance.getWarmUpTime()) {
-                int ww = (int) ((float) betweenTime / ((float) instance.getWarmUpTime() / (float) instance.getWeight()));
-                return ww < 1 ? 1 : (Math.min(ww, instance.getWeight()));
-            }
-        }
-        return instance.getWeight();
     }
 }

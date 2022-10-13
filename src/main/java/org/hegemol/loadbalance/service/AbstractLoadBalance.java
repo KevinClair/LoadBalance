@@ -1,9 +1,10 @@
 package org.hegemol.loadbalance.service;
 
-import java.util.List;
-
 import org.hegemol.loadbalance.model.Instance;
+import org.hegemol.loadbalance.model.InstanceWarmUpWeight;
 import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * TODO
@@ -30,5 +31,22 @@ public abstract class AbstractLoadBalance<E extends Instance> implements LoadBal
             return instances.get(0);
         }
         return doLoad(instances, ip);
+    }
+
+    /**
+     * 通过计算预热时间，动态计算权重值
+     *
+     * @param instance 当前实例
+     * @return
+     */
+    protected int getWeight(InstanceWarmUpWeight instance) {
+        if (instance.getWeight() > 0 && instance.getStartUpTime() > 0) {
+            int betweenTime = (int) (System.currentTimeMillis() - instance.getStartUpTime());
+            if (betweenTime > 0 && betweenTime < instance.getWarmUpTime()) {
+                int ww = (int) ((float) betweenTime / ((float) instance.getWarmUpTime() / (float) instance.getWeight()));
+                return ww < 1 ? 1 : (Math.min(ww, instance.getWeight()));
+            }
+        }
+        return instance.getWeight();
     }
 }
